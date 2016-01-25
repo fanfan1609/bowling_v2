@@ -24,8 +24,13 @@
 	</div>
 		
 	<script>
+		var users = [
+			{user : 'dat-vq','fullname' : 'Vo Quoc Dat'},
+			{user : 'dat-vq1','fullname' : 'Vo Quoc Dat1'},
+			{user : 'dat-vq2','fullname' : 'Vo Quoc Dat2'}
+		]
 		var bowling = new Bowling();
-		bowling.total_score();
+		// bowling.total_score();
 		// console.log(Bowling.total_score())
 		// Bowling.total_score();
 		

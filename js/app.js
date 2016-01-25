@@ -1,41 +1,68 @@
-var Bowling = function(){
-	this.ref 	= null;	
-	this.total_score = function(){
-		var users 	= [];
-		var scores 	= [];
-		var barChartData = {};
-		this.ref = new Firebase("https://1388918824478.firebaseio.com/total_score");
-		this.ref.once('value', function(snapshot){
-			snapshot.forEach(function(child){
-				users.push(child.key());
-				scores.push(child.val());
-			});
-
-			barChartData.labels = users;
-			barChartData.datasets = [
-				{
-					fillColor : "rgba(220,220,220,0.5)",
-					strokeColor : "rgba(220,220,220,0.8)",
-					highlightFill: "rgba(220,220,220,0.75)",
-					highlightStroke: "rgba(220,220,220,1)",
-					data : scores
-				}
-			];
-			drawBarChart(barChartData)
-		});
-	}
-
-	this.drawBarChart = function(barChartData){
-		var ctx = document.getElementById("canvas").getContext("2d");
-		window.myBar = new Chart(ctx).Bar(barChartData, {
-			responsive : true
-		});
-	}
+/**
+ * Require include ChartJS and Firebase JS
+ */
+var Bowling = function () {
+	var ref = new Firebase("https://1388918824478.firebaseio.com");
+	ref.authWithCustomToken('lMHSDpt7namXXoOkhQnDQpNBFIm2O5izUlkGRuLb',function(error,authData){
+		if(error){
+			console.log("Authentication Failed!",error);
+		} else {
+			console.log("Authentication Successfull",authData);
+		}
+	});
 }
 
-function drawBarChart (barChartData) {
+Bowling.prototype.barChartData = function() {
+	return {
+		labels : {},
+		datasets : [
+			{
+				fillColor : "rgba(220,220,220,0.5)",
+				strokeColor : "rgba(220,220,220,0.8)",
+				highlightFill: "rgba(220,220,220,0.75)",
+				highlightStroke: "rgba(220,220,220,1)",
+				data : {}
+			}
+		]
+	};
+}
+
+Bowling.prototype.addUsers = function(users){
+	var userRef 	= new Firebase("https://1388918824478.firebaseio.com/users");
+	if (!users instanceof Array){
+		users = [users];
+	}
+
+	userRef.once('value',function(userSnapshot){
+		users.forEach(function(user){
+			userRef.push().set(user)
+		});
+	});
+}
+
+
+Bowling.prototype.addScore = function(scores){
+	
+}
+
+Bowling.prototype.updateScore = function(scores){
+
+}
+
+Bowling.prototype.totalScore = function(scores){
+
+}
+
+Bowling.prototype.drawBarChart = function(barChartData){
 	var ctx = document.getElementById("canvas").getContext("2d");
-	window.myBar = new Chart(ctx).Bar(barChartData, {
+	window.myBar = new Chart(ctx).Bar(barChartData,{
+		responsive : true
+	});
+}
+
+Bowling.prototype.drawRadarChart = function(radarChartData){
+	var ctx = document.getElementById("canvas").getContext("2d");
+	window.myBar = new Chart(ctx).Radar(barChartData,{
 		responsive : true
 	});
 }
