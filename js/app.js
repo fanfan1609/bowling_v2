@@ -1,6 +1,18 @@
 /**
  * Require include ChartJS and Firebase JS
  */
+
+var app = {
+	name : 'Bowling',
+	getName : function(){
+		return this.name
+	},
+	setName :function(name){
+		this.name = name
+	}
+}
+
+
 var Bowling = function () {
 	var ref = new Firebase("https://1388918824478.firebaseio.com");
 	ref.authWithCustomToken('lMHSDpt7namXXoOkhQnDQpNBFIm2O5izUlkGRuLb',function(error,authData){
@@ -10,7 +22,17 @@ var Bowling = function () {
 			console.log("Authentication Successfull",authData);
 		}
 	});
+	var a = 1;
 }
+
+Bowling.prototype.test = function(){
+	console.log(this.test1());
+}
+
+Bowling.prototype.test1 = function(){
+	return 1;
+}
+
 
 Bowling.prototype.barChartData = function() {
 	return {
@@ -27,16 +49,24 @@ Bowling.prototype.barChartData = function() {
 	};
 }
 
+Bowling.prototype.getTotalScore = function(user_id){
+	var totalScoreRef = new Firebase('https://1388918824478.firebaseio.com/total_score/')
+	totalScoreRef.once('value',function(totalScore){
+	 	totalScore.forEach(function(score){
+	 		if( score.key() == user_id){
+	 			console.log(score.val())
+	 		}
+	 	});
+	});
+}
+
 Bowling.prototype.addUsers = function(users){
 	var userRef 	= new Firebase("https://1388918824478.firebaseio.com/users");
 	if (!users instanceof Array){
 		users = [users];
 	}
-
-	userRef.once('value',function(userSnapshot){
-		users.forEach(function(user){
-			userRef.push().set(user)
-		});
+	users.forEach(function(user){
+		userRef.child(user.id).set(user);
 	});
 }
 
@@ -50,6 +80,10 @@ Bowling.prototype.updateScore = function(scores){
 }
 
 Bowling.prototype.totalScore = function(scores){
+
+}
+
+Bowling.prototype.drawTotalScore = function(){
 
 }
 
