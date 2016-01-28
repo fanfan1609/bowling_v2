@@ -19,17 +19,20 @@
 	<h2>Fabrica bowling League (<?php echo date('d/m/Y')?>)</h2>
 	<h3 class="text-info">Table Ranking</h3>
 
-	<div>
+	<div style='width:50%'>
 		<canvas id="canvas" height="500" width="500"></canvas>
 	</div>
 		
 	<script>
-		var users = [
-			{id : 'user1','fullname' : 'Vo Quoc Dat1'},
-			{id : 'user2','fullname' : 'Vo Quoc Dat3'},
-			{id : 'user3','fullname' : 'Vo Quoc Dat4'}
-		]
-		var bowling = new Bowling();
+		// app.authWithCustomToken();
+		app.drawTotalScore();
+
+		// var users = [
+		// 	{id : 'user1','fullname' : 'Vo Quoc Dat1'},
+		// 	{id : 'user2','fullname' : 'Vo Quoc Dat3'},
+		// 	{id : 'user3','fullname' : 'Vo Quoc Dat4'}
+		// ]
+		// var bowling = new Bowling();
 		
 		// bowling.total_score();
 		// console.log(Bowling.total_score())
