@@ -102,10 +102,10 @@ var app = {
 			labels : labels,
 			datasets : [
 				{
-					fillColor : "rgba(220,220,220,0.5)",
+					fillColor : "rgba(151,187,205,0.5)",
 					strokeColor : "rgba(220,220,220,0.8)",
 					highlightFill: "rgba(220,220,220,0.75)",
-					highlightStroke: "rgba(220,220,220,1)",
+					highlightStroke: "rgba(151,187,205,1)",
 					data : data
 				}
 			]
