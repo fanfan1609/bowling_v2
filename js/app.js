@@ -18,6 +18,7 @@ var app = {
 	usersRef		: null,
 	gamesRef		: null,
 	// Chart Data
+	barChart 		: null,
 	barChartData	: null,
 	radarChartData	: null,
 	barChartOption	: {
@@ -65,6 +66,12 @@ var app = {
 			this.totalScoreRef = new Firebase(this.totalScoreURL);
 		}
 	},
+	initGames : function(){
+		this.initAuth();
+		if(!this.gamesRef){
+			this.gamesRef = new Firebase(this.gamesURL);
+		}	
+	},
 	authWithCustomToken : function(){
 		this.initAuth();
 		this.authRef.authWithCustomToken('lMHSDpt7namXXoOkhQnDQpNBFIm2O5izUlkGRuLb',function(error,authData){
@@ -94,10 +101,45 @@ var app = {
 	setAuth: function(isSuccess){
 		this.isAuth = isSuccess;
 	},
+
+	loadGames: function(){
+		this.initGames();
+		this.gamesRef.once('value',function(games){
+			var date = [];
+			games.forEach(function(game){
+				$("<li>Game in <a href='javascript:void(0)' data-key='"+game.key()+"' class='game-detail' >" + game.key()+"</a> </li>").appendTo("#date-list");
+			});
+			app.loadGamesList(date);
+		});
+	},
+	addGames : function(games){
+		this.initAuth();
+		var gameRef = this.authRef.child('games');
+		$.each(games, function(index, game){
+			gameRef.child(index).set(game);
+		})
+	},
+	getGameDetail: function(key){
+		this.initGames();
+		var gameRef = this.gamesRef.child(key);
+		gameRef.once('value',function(users){
+			var data = users.val();
+			var users = [];
+			var game_1 = [];
+			var game_2 = [];
+
+			$.each(data, function(key,user){
+				users.push(key);
+				game_1.push(user.game_1.score);
+				game_2.push(user.game_2.score);
+			});
+			app.setBarChartData(users,game_1,game_2);
+			app.drawBarChart();
+		})
+	},
+
 	// Chart Data Method
-	setBarChartData: function(labels,data){
-		console.log(data);
-		console.log(labels);
+	setBarChartData: function(labels,game_1,game_2){
 		this.barChartData = {
 			labels : labels,
 			datasets : [
@@ -106,10 +148,22 @@ var app = {
 					strokeColor : "rgba(220,220,220,0.8)",
 					highlightFill: "rgba(220,220,220,0.75)",
 					highlightStroke: "rgba(151,187,205,1)",
-					data : data
+					data : game_1
 				}
 			]
 		};
+		if( game_2.length > 0){
+			this.barChartData.datasets.push(
+				{
+		            label: "My Second dataset",
+		            fillColor: "rgba(151,187,205,0.5)",
+		            strokeColor: "rgba(151,187,205,0.8)",
+		            highlightFill: "rgba(151,187,205,0.75)",
+		            highlightStroke: "rgba(151,187,205,1)",
+		            data: game_2
+		        }
+			);
+		}
 	},
 
 	// Draw methods
@@ -122,101 +176,23 @@ var app = {
 				scores.push(score.val());
 				users.push(score.key());
 			});
-			app.setBarChartData(users,scores);
+			app.setBarChartData(users,scores,[]);
 			app.drawBarChart();
 		});
 	},
 	drawBarChart: function(){
 		var ctx = document.getElementById("canvas").getContext("2d");
-		window.myBar = new Chart(ctx).Bar(this.barChartData,this.barChartOption);
-	}
-}
-
-
-var Bowling = function () {
-	var ref = new Firebase("https://1388918824478.firebaseio.com");
-	ref.authWithCustomToken('lMHSDpt7namXXoOkhQnDQpNBFIm2O5izUlkGRuLb',function(error,authData){
-		if(error){
-			console.log("Authentication Failed!",error);
+		if(!this.barChart){
+			this.barChart = new Chart(ctx).Bar(this.barChartData,this.barChartOption);	
 		} else {
-			console.log("Authentication Successfull",authData);
+			this.barChart.removeData(); 
+			this.barChart = new Chart(ctx).Bar(this.barChartData,this.barChartOption);	
 		}
-	});
-	var a = 1;
-}
+		
+	},
 
-Bowling.prototype.test = function(){
-	console.log(this.test1());
-}
-
-Bowling.prototype.test1 = function(){
-	return 1;
-}
-
-
-Bowling.prototype.barChartData = function() {
-	return {
-		labels : {},
-		datasets : [
-			{
-				fillColor : "rgba(220,220,220,0.5)",
-				strokeColor : "rgba(220,220,220,0.8)",
-				highlightFill: "rgba(220,220,220,0.75)",
-				highlightStroke: "rgba(220,220,220,1)",
-				data : {}
-			}
-		]
-	};
-}
-
-Bowling.prototype.getTotalScore = function(user_id){
-	var totalScoreRef = new Firebase('https://1388918824478.firebaseio.com/total_score/')
-	totalScoreRef.once('value',function(totalScore){
-	 	totalScore.forEach(function(score){
-	 		if( score.key() == user_id){
-	 			console.log(score.val())
-	 		}
-	 	});
-	});
-}
-
-Bowling.prototype.addUsers = function(users){
-	var userRef 	= new Firebase("https://1388918824478.firebaseio.com/users");
-	if (!users instanceof Array){
-		users = [users];
+	loadGamesList: function(dateList){
+		var el = $("#date-list");
 	}
-	users.forEach(function(user){
-		userRef.child(user.id).set(user);
-	});
 }
 
-
-Bowling.prototype.addScore = function(scores){
-	
-}
-
-Bowling.prototype.updateScore = function(scores){
-
-}
-
-Bowling.prototype.totalScore = function(scores){
-
-}
-
-Bowling.prototype.drawTotalScore = function(){
-
-}
-
-Bowling.prototype.drawBarChart = function(barChartData){
-	var ctx = document.getElementById("canvas").getContext("2d");
-	window.myBar = new Chart(ctx).Bar(barChartData,{
-		responsive : true
-	});
-}
-
-Bowling.prototype.drawRadarChart = function(radarChartData){
-	var ctx = document.getElementById("canvas").getContext("2d");
-	window.myBar = new Chart(ctx).Radar(barChartData,{
-		responsive : true
-	});
-}

@@ -16,17 +16,158 @@
 	
 </head>
 <body>
-	<h2>Fabrica bowling League (<?php echo date('d/m/Y')?>)</h2>
-	<h3 class="text-info">Table Ranking</h3>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6">
+				<h2>Fabrica bowling League</h2>
+				<h3 class="text-info">Table Ranking</h3>
 
-	<div style='width:50%'>
-		<canvas id="canvas" height="500" width="500"></canvas>
-	</div>
-		
+				<div style='width:100%'>
+					<canvas id="canvas" height="500" width="500"></canvas>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<h3>List Games</h3>
+				<ul id="date-list">
+					
+				</ul>
+			</div>
+		</div>
+	</div>		
 	<script>
 		// app.authWithCustomToken();
 		app.drawTotalScore();
-
+		var games = {
+			'20160115' : {
+				'dat-vq' : {
+					'game_1' : {'score' : 118 },
+					'game_2' : {'score' : 102},
+				},
+				'khuong-dd' : {
+					'game_1' : {'score' : 88},
+					'game_2' : {'score' : 66},
+				},
+				'loc-np' : {
+					'game_1' : {'score' : 77 },
+					'game_2' : {'score' : 81},
+				},
+				'yuki-adachi' : {
+					'game_1' : {'score' : 93},
+					'game_2' : {'score' : 160},
+				},
+				'xuan-lk' : {
+					'game_1' : {'score' : 88},
+					'game_2' : {'score' : 100},
+				},
+				'vinh-nt' : {
+					'game_1' : {'score' : 101},
+					'game_2' : {'score' : 84},
+				},
+				'hieu-tt' : {
+					'game_1' : {'score' : 0},
+					'game_2' : {'score' : 0},
+				},
+				'tam-nh' : {
+					'game_1' : {'score' : 84},
+					'game_2' : {'score' : 131},
+				}
+			},
+			'20160129' : {
+				'khuong-dd' : {
+					'game_1' : {'score' : 82,'strike': 1, 'spare' : 0},
+					'game_2' : {'score' : 43,'strike': 0, 'spare' : 0},
+				},
+				'dat-vq' : {
+					'game_1' : {'score' : 125,'strike': 1, 'spare' : 4},
+					'game_2' : {'score' : 120,'strike': 0, 'spare' : 4},
+				},
+				'thu-pa' : {
+					'game_1' : {'score' : 105,'strike': 1, 'spare' : 1},
+					'game_2' : {'score' : 109,'strike': 1, 'spare' : 2},
+				},
+				'yuki-adachi' : {
+					'game_1' : {'score' : 105,'strike': 2, 'spare' : 0},
+					'game_2' : {'score' : 77,'strike': 1, 'spare' : 1},
+				},
+				'xuan-lk' : {
+					'game_1' : {'score' : 65, 'strike': 0, 'spare': 1},
+					'game_2' : {'score' : 95, 'strike': 1, 'spare': 1},
+				},
+				'tam-nh' : {
+					'game_1' : {'score' : 98, 'strike': 1, 'spare': 2},
+					'game_2' : {'score' : 130, 'strike': 2, 'spare': 3},
+				}
+			},
+			'20160219' : {
+				'khuong-dd' : {
+					'game_1' : {'score' : 97,'strike': 1, 'spare' : 1},
+					'game_2' : {'score' : 101,'strike': 0, 'spare' : 2},
+				},
+				'dat-vq' : {
+					'game_1' : {'score' : 75,'strike': 0, 'spare' : 0},
+					'game_2' : {'score' : 109,'strike': 1, 'spare' : 2},
+				},
+				'thu-pa' : {
+					'game_1' : {'score' : 100,'strike': 1, 'spare' : 2},
+					'game_2' : {'score' : 110,'strike': 1, 'spare' : 3},
+				},
+				'yuki-adachi' : {
+					'game_1' : {'score' : 95,'strike': 0, 'spare' : 2},
+					'game_2' : {'score' : 123,'strike': 0, 'spare' : 5},
+				},
+				'xuan-lk' : {
+					'game_1' : {'score' : 84, 'strike': 0, 'spare': 2},
+					'game_2' : {'score' : 99, 'strike': 1, 'spare': 1},
+				},
+				'tam-nh' : {
+					'game_1' : {'score' : 95, 'strike': 1, 'spare': 3},
+					'game_2' : {'score' : 107, 'strike': 4, 'spare': 0},
+				},
+				'loc-np' : {
+					'game_1' : {'score' : 127, 'strike': 1, 'spare': 4},
+					'game_2' : {'score' : 87, 'strike': 2, 'spare': 1},
+				},
+				'vinh-nt' : {
+					'game_1' : {'score' : 64, 'strike': 0, 'spare': 0},
+					'game_2' : {'score' : 87, 'strike': 0, 'spare': 1},
+				}
+			},
+			'20160304' : {
+				'xuan-lk' : {
+					'game_1' : {'score' : 113, 'strike': 1, 'spare': 2},
+					'game_2' : {'score' : 114, 'strike': 1, 'spare': 2},
+				},
+				'khuong-dd' : {
+					'game_1' : {'score' : 79,'strike': 0, 'spare' : 1},
+					'game_2' : {'score' : 113,'strike': 2, 'spare' : 1},
+				},
+				'dat-vq' : {
+					'game_1' : {'score' : 113,'strike': 2, 'spare' : 1},
+					'game_2' : {'score' : 100,'strike': 1, 'spare' : 1},
+				},
+				'yuki-adachi' : {
+					'game_1' : {'score' : 105,'strike': 2, 'spare' : 2},
+					'game_2' : {'score' : 100,'strike': 0, 'spare' : 2},
+				},
+				'tam-nh' : {
+					'game_1' : {'score' : 81, 'strike': 1, 'spare': 1},
+					'game_2' : {'score' : 65, 'strike': 1, 'spare': 0},
+				},
+				'loc-np' : {
+					'game_1' : {'score' : 80, 'strike': 0, 'spare': 2},
+					'game_2' : {'score' : 46, 'strike': 1, 'spare': 1},
+				},
+			}
+		}
+		$(function(){
+			app.loadGames();
+			$('body').on('click','.game-detail',function(){
+				app.getGameDetail($(this).attr('data-key'));
+			})	
+		})
+		
+		// app.addGames(games);
 		// var users = [
 		// 	{id : 'user1','fullname' : 'Vo Quoc Dat1'},
 		// 	{id : 'user2','fullname' : 'Vo Quoc Dat3'},
