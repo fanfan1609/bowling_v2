@@ -109,7 +109,16 @@ var app = {
 			games.forEach(function(game){
 				$("<li>Game in <a href='javascript:void(0)' data-key='"+game.key()+"' class='game-detail' >" + game.key()+"</a> </li>").appendTo("#date-list");
 			});
-			app.loadGamesList(date);
+		});
+	},
+	loadUsers: function(){
+		this.initAuth();
+		var userRef = this.authRef.child('users');
+		userRef.once('value',function(users){
+			users.forEach(function(user){
+				$("<li>Game in <a href='javascript:void(0)' data-key='"+user.key()+"' class='user-detail' >" + user.key()+"</a> </li>").appendTo("#user-list");
+				console.log(user.key());
+			})
 		});
 	},
 	addGames : function(games){
@@ -182,17 +191,17 @@ var app = {
 	},
 	drawBarChart: function(){
 		var ctx = document.getElementById("canvas").getContext("2d");
+		console.log(this.barChart);
 		if(!this.barChart){
 			this.barChart = new Chart(ctx).Bar(this.barChartData,this.barChartOption);	
 		} else {
-			this.barChart.removeData(); 
+			// this.barChart.removeData();
+			// this.barChart.labels = this.barChartOption;
+			// this.barChart.datasets = this.barChartData; 
+			this.barChart.destroy();
 			this.barChart = new Chart(ctx).Bar(this.barChartData,this.barChartOption);	
 		}
 		
 	},
-
-	loadGamesList: function(dateList){
-		var el = $("#date-list");
-	}
 }
 
