@@ -54,36 +54,36 @@
 		var games = {
 			'20160115' : {
 				'dat-vq' : {
-					'game_1' : {'score' : 118 },
-					'game_2' : {'score' : 102},
+					'game_1' : {'score' : 118,'strike' : 0, 'spare': 0},
+					'game_2' : {'score' : 102,'strike' : 0, 'spare': 0},
 				},
 				'khuong-dd' : {
-					'game_1' : {'score' : 88},
-					'game_2' : {'score' : 66},
+					'game_1' : {'score' : 88,'strike' : 0, 'spare': 0},
+					'game_2' : {'score' : 66,'strike' : 0, 'spare': 0},
 				},
 				'loc-np' : {
-					'game_1' : {'score' : 77 },
-					'game_2' : {'score' : 81},
+					'game_1' : {'score' : 77,'strike' : 0, 'spare': 0 },
+					'game_2' : {'score' : 81,'strike' : 0, 'spare': 0},
 				},
 				'yuki-adachi' : {
-					'game_1' : {'score' : 93},
-					'game_2' : {'score' : 160},
+					'game_1' : {'score' : 93,'strike' : 0, 'spare': 0},
+					'game_2' : {'score' : 160,'strike' : 0, 'spare': 0},
 				},
 				'xuan-lk' : {
-					'game_1' : {'score' : 88},
-					'game_2' : {'score' : 100},
+					'game_1' : {'score' : 88,'strike' : 0, 'spare': 0},
+					'game_2' : {'score' : 100,'strike' : 0, 'spare': 0},
 				},
 				'vinh-nt' : {
-					'game_1' : {'score' : 101},
-					'game_2' : {'score' : 84},
+					'game_1' : {'score' : 101,'strike' : 0, 'spare': 0},
+					'game_2' : {'score' : 84,'strike' : 0, 'spare': 0},
 				},
 				'hieu-tt' : {
-					'game_1' : {'score' : 0},
-					'game_2' : {'score' : 0},
+					'game_1' : {'score' : 0,'strike' : 0, 'spare': 0},
+					'game_2' : {'score' : 0,'strike' : 0, 'spare': 0},
 				},
 				'tam-nh' : {
-					'game_1' : {'score' : 84},
-					'game_2' : {'score' : 131},
+					'game_1' : {'score' : 84,'strike' : 0, 'spare': 0},
+					'game_2' : {'score' : 131,'strike' : 0, 'spare': 0},
 				}
 			},
 			'20160129' : {
@@ -171,6 +171,44 @@
 					'game_1' : {'score' : 80, 'strike': 0, 'spare': 2},
 					'game_2' : {'score' : 46, 'strike': 1, 'spare': 1},
 				},
+			},
+			'20160316' : {
+				'xuan-lk' : {
+					'game_1' : {'score' : 113, 'strike': 1, 'spare': 2},
+					'game_2' : {'score' : 93, 'strike': 2, 'spare': 0},
+				},
+				'khuong-dd' : {
+					'game_1' : {'score' : 93,'strike': 1, 'spare' : 1},
+					'game_2' : {'score' : 82,'strike': 0, 'spare' : 1},
+				},
+				'dat-vq' : {
+					'game_1' : {'score' : 105,'strike': 1, 'spare' : 2},
+					'game_2' : {'score' : 109,'strike': 1, 'spare' : 2},
+				},
+				'yuki-adachi' : {
+					'game_1' : {'score' : 118,'strike': 0, 'spare' : 6},
+					'game_2' : {'score' : 83,'strike': 0, 'spare' : 1},
+				},
+				'tam-nh' : {
+					'game_1' : {'score' : 70, 'strike': 0, 'spare': 0},
+					'game_2' : {'score' : 89, 'strike': 1, 'spare': 1},
+				},
+				'loc-np' : {
+					'game_1' : {'score' : 105, 'strike': 1, 'spare': 2},
+					'game_2' : {'score' : 79, 'strike': 1, 'spare': 2},
+				},
+				'vinh-nt' : {
+					'game_1' : {'score' : 93, 'strike': 2, 'spare': 1},
+					'game_2' : {'score' : 139, 'strike': 2, 'spare': 3},
+				},
+				'hieu-tt' : {
+					'game_1' : {'score' : 71, 'strike': 0, 'spare': 3},
+					'game_2' : {'score' : 107, 'strike': 0, 'spare': 4},
+				},
+				'thu-pa' : {
+					'game_1' : {'score' : 93, 'strike': 0, 'spare': 2},
+					'game_2' : {'score' : 79, 'strike': 0, 'spare': 0},
+				},
 			}
 		}
 		$(function(){
@@ -182,47 +220,6 @@
 		})
 		
 		// app.addGames(games);
-		// var users = [
-		// 	{id : 'user1','fullname' : 'Vo Quoc Dat1'},
-		// 	{id : 'user2','fullname' : 'Vo Quoc Dat3'},
-		// 	{id : 'user3','fullname' : 'Vo Quoc Dat4'}
-		// ]
-		// var bowling = new Bowling();
-		
-		// bowling.total_score();
-		// console.log(Bowling.total_score())
-		// Bowling.total_score();
-		
-		
-		// var ref = new Firebase("https://1388918824478.firebaseio.com/total_score");
-		// var users = [];
-		// var scores = [];
-		// var barChartData = {
-
-		// };
-
-		// ref.once('value', function(snapshot){
-		// 	snapshot.forEach(function(childSnap){
-		// 		users.push(childSnap.key());
-		// 		scores.push(childSnap.val());
-		// 	});
-
-		// 	barChartData.labels = users;
-		// 	barChartData.datasets = [
-		// 		{
-		// 			fillColor : "rgba(220,220,220,0.5)",
-		// 			strokeColor : "rgba(220,220,220,0.8)",
-		// 			highlightFill: "rgba(220,220,220,0.75)",
-		// 			highlightStroke: "rgba(220,220,220,1)",
-		// 			data : scores
-		// 		}
-		// 	];
-		// 	var ctx = document.getElementById("canvas").getContext("2d");
-		// 	console.log(barChartData);
-		// 	window.myBar = new Chart(ctx).Bar(barChartData, {
-		// 		responsive : true
-		// 	});
-		// });
 	</script>
 </body>
 </html>

@@ -117,16 +117,41 @@ var app = {
 		userRef.once('value',function(users){
 			users.forEach(function(user){
 				$("<li>Game in <a href='javascript:void(0)' data-key='"+user.key()+"' class='user-detail' >" + user.key()+"</a> </li>").appendTo("#user-list");
-				console.log(user.key());
 			})
 		});
 	},
 	addGames : function(games){
 		this.initAuth();
 		var gameRef = this.authRef.child('games');
+		var self = this;
+		gameRef.on('child_added',function(childSnapsot,prevChildKey){
+			var data = childSnapsot.val();
+			$.each(data, function(userId, info){
+				self.updateUser(userId, info);
+			});
+		});
 		$.each(games, function(index, game){
 			gameRef.child(index).set(game);
 		})
+	},
+	updateUser : function(userId, info){
+		var userRef = this.authRef.child('users/'+userId);
+		userRef.transaction(function(data){
+			var score 	= info.game_1.score + info.game_2.score;
+			var strike 	= info.game_1.strike + info.game_2.strike;
+			var spare 	= info.game_1.spare + info.game_2.spare;
+			if( data && data.hasOwnProperty('score')){
+				score = score + data.score;
+			}
+			if(data && data.hasOwnProperty('strike')){
+				strike = strike + data.strike;
+			}
+			if(data && data.hasOwnProperty('spare')){
+				spare = spare + data.spare;
+			}
+
+			userRef.set({'score': score, 'strike': strike, 'spare': spare})
+		});
 	},
 	getGameDetail: function(key){
 		this.initGames();
@@ -178,13 +203,18 @@ var app = {
 	// Draw methods
 	drawTotalScore: function(){
 		this.initTotalScore();
-		this.totalScoreRef.once('value',function(totalScore){
+		var usersRef = this.authRef.child('users');
+		usersRef.once('value',function(data){
+			usersData = data.val();
 			var users = [];
 			var scores = [];
-			totalScore.forEach(function(score){
-				scores.push(score.val());
-				users.push(score.key());
-			});
+			$.each(usersData,function(key,user){
+				scores.push(user.score);
+				users.push(key);
+			})
+			
+			console.log(users);
+			console.log(scores);
 			app.setBarChartData(users,scores,[]);
 			app.drawBarChart();
 		});
