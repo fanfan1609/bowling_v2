@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<style type="text/css">
+${demo.css}
+		</style>
+		<script type="text/javascript">
+        var chart;
+        $(function () {
+            chart = new Highcharts.Chart({
+                chart : {
+                    renderTo : 'container',
+                    defaultSeriesType : 'column',
+                    events : {
+                        load: function(){
+                            loadScore(this);
+                        }
+                    }
+                },
+                title: {
+                    text : 'Fabrica Bowling Ranking Score'
+                },
+                xAxis: {
+                    categories: []
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Point'
+                    },
+                },
+                series: [{
+                    name: 'Total Point',
+                    data: []
+                }]
+            });
+        });
+
+        function updatexAxis(){
+            chart.xAxis[0].update({
+                categories : ['ada','dadsad','12123']
+            })
+        }
+        function loadScore(chart){
+            var ref = new Firebase('https://1388918824478.firebaseio.com/total_score');
+            ref.once('value',function(totalScore){
+                var users = []; var scores = [];
+                totalScore.forEach(function(score){
+                    users.push(score.key());
+                    scores.push(score.val());
+                })
+                chart.xAxis[0].update({
+                    categories : users
+                })
+                chart.series[0].update({
+                    data : scores,
+                    type : 'line'
+                })
+            })
+        }
+		</script>
+	</head>
+	<body>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/firebase-debug.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+	</body>
+</html>
